@@ -1,0 +1,48 @@
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Mi perfil de usuario</h4>
+                <h6 class="card-subtitle">Ajustes</h6>
+                <form [formGroup]="perfilForm" (ngSubmit)="actualizarPerfil()"  [autocomplete]="'off'" class="form p-t-20">
+                    <div class="form-group">
+                        <label for="exampleInputuname">User Name</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input formControlName="nombre" type="text" class="form-control" id="exampleInputuname"
+                                placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-email"></i></div>
+                            <input [readOnly]="usuario.google" formControlName="email" type="email" class="form-control" id="exampleInputEmail1"
+                                placeholder="Enter email">
+                        </div>
+                    </div>
+
+                    <button type="submit" [disabled]="perfilForm.invalid" class="btn btn-success btn-block waves-effect waves-light m-r-10"><i
+                            class="fa fa-save"></i> Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">
+                    <h4 class="card-title">Avatar</h4>
+                    <h6 class="card-subtitle">Imagen del usuario</h6>
+                    <img *ngIf="!this.imgTemp" class="card-img img-responsive mb-4" [src]="this.usuario.imagenUrl" >
+                    <img class="card-img img-responsive mb-4" [src]="this.imgTemp" >
+                    <input class="mb-3" type="file" (change)="cambiarImagen($any($event.target).files[0])">
+                    <br>
+                    <button (click)="subirImagen()" [disabled]="!this.imagenSubir" type="button
+                    " class="btn btn-success btn-block waves-effect waves-light m-r-10"><i class="fa fa-save"></i>
+                        Cambiar imagen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

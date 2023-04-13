@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -14,13 +14,13 @@ import { UsuarioService } from '../services/usuario.service';
 })
 export class AuthGuard implements CanActivate {
   bandera: boolean = false;
-  constructor(private ususarioService: UsuarioService, private router:Router) {}
+  constructor(private ususarioService: UsuarioService, private router:Router, private ngZone:NgZone) {}
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.ususarioService
       .validarToken()
       .pipe(tap((estaAutenticado) => {
         if(!estaAutenticado){
-          this.router.navigateByUrl('/login');
+             this.router.navigateByUrl('/login');
         }
       }));
   }

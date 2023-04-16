@@ -21,13 +21,19 @@ export class UsuarioService {
     private router: Router,
     private ngZone: NgZone
   ) {}
-  get token(): string{
+  get token(): string {
     return localStorage.getItem('token') || '';
   }
-  get uid():string{
+  get uid(): string {
     return this.usuario.uid || '';
   }
-
+  get headers() {
+    return {
+      headers: {
+        'x-token': this.token,
+      },
+    };
+  }
 
   logout() {
     localStorage.removeItem('token');
@@ -45,22 +51,16 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean> {
-    return this.http
-      .get(`${base_url}/login/renew`, {
-        headers: {
-          'x-token': this.token,
-        },
-      })
-      .pipe(
-        map((resp: any) => {
-          const { email, google, img = '', nombre, role, uid } = resp.usuario;
-          this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
-          localStorage.setItem('token', resp.token);
-          return true;
-        }),
+    return this.http.get(`${base_url}/login/renew`, this.headers).pipe(
+      map((resp: any) => {
+        const { email, google, img = '', nombre, role, uid } = resp.usuario;
+        this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
+        localStorage.setItem('token', resp.token);
+        return true;
+      }),
 
-        catchError((err) => of(false))
-      );
+      catchError((err) => of(false))
+    );
   }
 
   crearUsuario(formData: RegisterForm) {
@@ -89,15 +89,53 @@ export class UsuarioService {
       })
     );
   }
-  actualizarPerfil(data: { email: string; nombre: string, role:string }) {
-    data={
+  actualizarPerfil(data: { email: string; nombre: string; role: string }) {
+    data = {
       ...data,
-      role: this.usuario.role || ''
-    }
-    return this.http.put(`${base_url}/usuarios/${this.uid}`,data, {
-      headers: {
-        'x-token': this.token
-      }
-    });
+      role: this.usuario.role || '',
+    };
+    return this.http.put(
+      `${base_url}/usuarios/${this.uid}`,
+      data,
+      this.headers
+    );
+  }
+
+  cargarUsuarios(desde: number = 0) {
+    return this.http
+      .get<{ total: number; usuarios: Usuario[] }>(
+        `${base_url}/usuarios?desde=${desde}`,
+        this.headers
+      )
+      .pipe(
+        map((resp) => {
+          const usuarios = resp.usuarios.map(
+            (user) =>
+              new Usuario(
+                user.nombre,
+                user.email,
+                '',
+                user.img,
+                user.google,
+                user.role,
+                user.uid
+              )
+          );
+          return {
+            total: resp.total,
+            usuarios,
+          };
+        })
+      );
+  }
+  eliminarUsuario(usuario: Usuario) {
+   return this.http.delete(`${base_url}/usuarios/${usuario.uid}`, this.headers);
+  }
+  guardarUsuario(data: Usuario) {
+    return this.http.put(
+      `${base_url}/usuarios/${this.uid}`,
+      data,
+      this.headers
+    );
   }
 }

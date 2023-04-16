@@ -3,22 +3,12 @@ import { CommonModule } from '@angular/common';
 import { IncrementadorComponent } from './incrementador/incrementador.component';
 import { FormsModule } from '@angular/forms';
 import { DonaComponent } from './dona/dona.component';
-import {NgChartsModule} from 'ng2-charts';
-
+import { NgChartsModule } from 'ng2-charts';
+import { ModelImagenComponent } from './model-imagen/model-imagen.component';
 
 @NgModule({
-  declarations: [
-    IncrementadorComponent,
-    DonaComponent
-  ],
-  exports:[
-    IncrementadorComponent,
-    DonaComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    NgChartsModule
-  ]
+  declarations: [IncrementadorComponent, DonaComponent, ModelImagenComponent],
+  exports: [IncrementadorComponent, DonaComponent, ModelImagenComponent],
+  imports: [CommonModule, FormsModule, NgChartsModule],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}

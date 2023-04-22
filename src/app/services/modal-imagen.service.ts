@@ -10,7 +10,7 @@ export class ModalImagenService {
   public tipo!: 'usuarios' | 'medicos' | 'hospitales';
   public id: string = '';
   public img: string = 'no-img';
-  public nuveaImagen:EventEmitter<string> = new EventEmitter<string>()
+  public nuevaImagen:EventEmitter<string> = new EventEmitter<string>()
 
   get ocultarModal() {
     return this._ocultarModal;
@@ -23,9 +23,6 @@ export class ModalImagenService {
     this._ocultarModal = false;
     this.tipo = tipo;
     this.id = id;
-    console.log(id);
-    console.log(img);
-
     this.img =
       img.trim().length > 0
         ? img.includes('https')

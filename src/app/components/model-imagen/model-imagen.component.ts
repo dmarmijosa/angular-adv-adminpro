@@ -47,7 +47,7 @@ export class ModelImagenComponent implements OnInit {
           icon: 'success',
           showConfirmButton:false
         });
-        this.modalImagenService.nuveaImagen.emit(res);
+        this.modalImagenService.nuevaImagen.emit(res);
         this.cerrarModal();
       }).catch((err)=>{
         Swal.fire({

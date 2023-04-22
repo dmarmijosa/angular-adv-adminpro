@@ -8,6 +8,7 @@ import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
 import { HttpClientModule} from '@angular/common/http';
 
+
 @NgModule({
   declarations: [AppComponent, NopagefoundComponent],
   imports: [AppRoutingModule, AuthModule, BrowserModule, PagesModule, HttpClientModule],

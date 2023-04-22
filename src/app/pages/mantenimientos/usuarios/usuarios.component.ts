@@ -27,7 +27,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.cargarUsuarios();
-    this.imgSub = this.modalImagenService.nuveaImagen
+    this.imgSub = this.modalImagenService.nuevaImagen
       .pipe(delay(100))
       .subscribe((img: any) => {
         console.log(img);
@@ -61,7 +61,7 @@ export class UsuariosComponent implements OnInit, OnDestroy {
     }
     this.busquedaService.buscar('usuarios', termino).subscribe({
       next: (resp) => {
-        this.usuarios = resp;
+        this.usuarios = resp as Usuario[];
       },
       error: (error) => {
         console.log(error);

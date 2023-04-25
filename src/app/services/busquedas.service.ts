@@ -13,6 +13,7 @@ const base_url = environment.base_url;
   providedIn: 'root',
 })
 export class BusquedasService {
+  
   constructor(private http: HttpClient) {}
 
   get token(): string {
@@ -69,5 +70,9 @@ export class BusquedasService {
         }
       })
     );
+  }
+  buscquedaGlobal(termino:string){
+    return this.http.get(`${base_url}/todo/${termino}`, this.headers);
+
   }
 }

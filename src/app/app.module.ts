@@ -6,13 +6,14 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthModule } from './auth/auth.module';
-import { HttpClientModule} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpInterceptor } from '@angular/common/http';
+import { InterceptService } from './intercepts/intercept.service';
 
 
 @NgModule({
   declarations: [AppComponent, NopagefoundComponent],
   imports: [AppRoutingModule, AuthModule, BrowserModule, PagesModule, HttpClientModule],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS,useClass:InterceptService, multi:true}],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

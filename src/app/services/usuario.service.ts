@@ -25,19 +25,10 @@ export class UsuarioService {
     return this.usuario?.role || 'USER_ROLE'
 
   }
-  get token(): string {
-    return localStorage.getItem('token') || '';
-  }
   get uid(): string {
     return this.usuario.uid || '';
   }
-  get headers() {
-    return {
-      headers: {
-        'x-token': this.token,
-      },
-    };
-  }
+
   guardarLocalStorage(token:string, menu:any){
     localStorage.setItem('token', token);
     localStorage.setItem('menu', JSON.stringify(menu));
@@ -60,7 +51,7 @@ export class UsuarioService {
   }
 
   validarToken(): Observable<boolean> {
-    return this.http.get(`${base_url}/login/renew`, this.headers).pipe(
+    return this.http.get(`${base_url}/login/renew`).pipe(
       map((resp: any) => {
         const { email, google, img = '', nombre, role, uid } = resp.usuario;
         this.usuario = new Usuario(nombre, email, '', img, google, role, uid);
@@ -105,16 +96,14 @@ export class UsuarioService {
     };
     return this.http.put(
       `${base_url}/usuarios/${this.uid}`,
-      data,
-      this.headers
+      data
     );
   }
 
   cargarUsuarios(desde: number = 0) {
     return this.http
       .get<{ total: number; usuarios: Usuario[] }>(
-        `${base_url}/usuarios?desde=${desde}`,
-        this.headers
+        `${base_url}/usuarios?desde=${desde}`
       )
       .pipe(
         map((resp) => {
@@ -138,13 +127,12 @@ export class UsuarioService {
       );
   }
   eliminarUsuario(usuario: Usuario) {
-   return this.http.delete(`${base_url}/usuarios/${usuario.uid}`, this.headers);
+   return this.http.delete(`${base_url}/usuarios/${usuario.uid}`);
   }
   guardarUsuario(data: Usuario) {
     return this.http.put(
       `${base_url}/usuarios/${this.uid}`,
-      data,
-      this.headers
+      data
     );
   }
 }

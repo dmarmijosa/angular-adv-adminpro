@@ -13,21 +13,7 @@ const base_url = environment.base_url;
   providedIn: 'root',
 })
 export class BusquedasService {
-  
   constructor(private http: HttpClient) {}
-
-  get token(): string {
-    return localStorage.getItem('token') || '';
-  }
-
-  get headers() {
-    return {
-      headers: {
-        'x-token': this.token,
-      },
-    };
-  }
-
   private transformarUsuarios(resultados: any[]): Usuario[] {
     return resultados.map(
       (user) =>
@@ -53,7 +39,7 @@ export class BusquedasService {
 
   buscar(tipo: 'usuarios' | 'medicos' | 'hospitales', termino: string) {
     const url = `${base_url}/todo/coleccion/${tipo}/${termino}`;
-    return this.http.get<any[]>(url, this.headers).pipe(
+    return this.http.get<any[]>(url).pipe(
       map((resp: any) => {
         switch (tipo) {
           case 'usuarios':
@@ -71,8 +57,7 @@ export class BusquedasService {
       })
     );
   }
-  buscquedaGlobal(termino:string){
-    return this.http.get(`${base_url}/todo/${termino}`, this.headers);
-
+  buscquedaGlobal(termino: string) {
+    return this.http.get(`${base_url}/todo/${termino}`);
   }
 }
